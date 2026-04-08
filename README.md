@@ -30,3 +30,12 @@ python app.py
 - 管理画面: http://127.0.0.1:5000/admin
 
 `responses.db` にデータが保存されます。
+
+## ファイルを一括ダウンロード（圧縮）
+以下のコマンドで、主要ファイルを `tar.gz` にまとめられます。
+
+```bash
+./scripts/create_archive.sh
+```
+
+出力された `lmt_files_YYYYMMDD_HHMMSS.tar.gz` をダウンロードして利用してください。
