@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自治会総会 出欠・議決権フォーム</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>自治会総会 出欠・議決権フォーム</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="messages">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post">
+      <section>
+        <h2>1. 総会への参加可否</h2>
+        <label><input type="radio" name="attendance" value="attend"> 参加する</label>
+        <label><input type="radio" name="attendance" value="absent"> 不参加</label>
+      </section>
+
+      <section>
+        <h2>2. 不参加の場合の議決権行使</h2>
+        <label><input type="radio" name="proxy_type" value="chair"> 議長に一任する（全議案賛成）</label>
+        <label><input type="radio" name="proxy_type" value="self"> 自分で行使する</label>
+      </section>
+
+      <section>
+        <h2>3. 議案ごとの賛否（「自分で行使する」の場合のみ）</h2>
+        {% for agenda in agenda_items %}
+          <div class="agenda-row">
+            <p>{{ agenda }}</p>
+            <label><input type="radio" name="vote_{{ loop.index }}" value="agree"> 賛成</label>
+            <label><input type="radio" name="vote_{{ loop.index }}" value="disagree"> 反対</label>
+          </div>
+        {% endfor %}
+      </section>
+
+      <section>
+        <h2>4. 申請者情報</h2>
+        <label>部屋番号 <input type="text" name="room_number" required></label>
+        <label>名前 <input type="text" name="full_name" required></label>
+        <label>記入日 <input type="date" name="submitted_on" value="{{ today }}" required></label>
+      </section>
+
+      <button type="submit">送信</button>
+    </form>
+
+    <p class="admin-link"><a href="{{ url_for('admin') }}">管理画面（集計確認）へ</a></p>
+  </main>
+</body>
+</html>
